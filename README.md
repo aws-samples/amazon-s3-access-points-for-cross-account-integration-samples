@@ -1,13 +1,8 @@
-# Amazon S3 Cross-account Access using Access Points
+# Amazon S3 Cross-account Access from EMR using Access Points
 
-This is a sample solution to demonstrate S3 cross-account access using [Access points](https://docs.aws.amazon.com/AmazonS3/latest/dev/access-points.html). It demonstrate two examples as  shown in the below figure.
+This is a sample solution to demonstrate S3 cross-account access from EMR using [Access points](https://docs.aws.amazon.com/AmazonS3/latest/dev/access-points.html). It demonstrates the example as shown in the below figure.
 
-![Alt](./src/main/resources/S3_Cross-account_Access_using_AccessPoints.png)
-
-## Build Instructions
-
-1. The source code has Maven nature, so if you have Maven locally then you can build it using standard Maven commands e.g. ```mvn -X clean install```. or use the options available in your IDE
-2. This will generate a jar file called ```s3-cross-account-access-points-0.1.jar```
+![Alt](./resources/EMR_S3_Cross-account_Access_using_AccessPoints.png)
 
 ## AWS Service Requirements
 
@@ -17,85 +12,66 @@ The following AWS services are required to demo/try this solution.
 
 1. One S3 Bucket
 1. One Bucket Policy
-1. Two Access Points
+1. One Access Point
 1. One KMS Key to encrypt S3 bucket
 
 ```Note:``` KMS Key is optional, if you want to skip this, skip all steps related to KMS Key in the subsequent sections.
 
 ### Target Account
 
-1. One IAM Group
-1. One IAM User
+1. One S3 Bucket
 1. One IAM Role
-1. One EC2 Instance
+1. One EMR Cluster
 
-## Utility Classes Overview
+## Source Code Overview
 
-| Class | Overview|
+| Code | Overview|
 |-------------------------------------------------------------- | -------------- |
-| [PutObject_Demo_UsingIAMRole](./src/main/java/com/amazonaws/s3/accesspoints/PutObject_Demo_UsingIAMRole.java) | Java class to upload an object to S3 - to be executed on an EC2 instance.|
-| [PutObject_Demo_StandaloneUser](./src/main/java/com/amazonaws/s3/accesspoints/PutObject_Demo_StandaloneUser.java) | Java class to upload an object to S3 - to be executed on your Laptop / MacBook.|
-
-## Deployment Instructions - Account B
-
-1. Login to AWS Console and go to IAM
-1. Create an IAM User Group  with the following IAM Policies
-   - [user_group_kms_policy_sample](./src/main/resources/user_group_kms_policy_sample.json)
-   - [user_group_s3_policy_sample](./src/main/resources/user_group_s3_policy_sample.json)
-1. Create an IAM User and add it to the  group created in  Step # 2
-1. Create an IAM Role with two policies as follows:
-   - IAM Policy for S3. Use [s3_policy_iam_role_ec2_instance](./src/main/resources/s3_policy_iam_role_ec2_instance.json) as a sample
-   - IAM Policy for KMS. Use [kms_key_policy](./src/main/resources/kms_key_policy.json) as a sample
-1. Provision as EC2 Instance with the following settings
-   - t2.micro instance should be good enough
-   - the IAM Role created in Steps # 4
-   - Make sure the security allows inbound access only from your IP address
-   - Make a note of the public IP address
+| [s3_access_points](./src/s3_access_points.py) | PySpark script to read and write data using S3 Access Points.|
 
 ## Deployment Instructions - Account A (E.g. 2345678901)
 
-1. Logon to AWS Console
+1. Login to AWS Console.
 1. Go to KMS and create a Customer managed key
    - For Key administrators, add required users / roles in Account A
    - For Key users, add
       - required users / roles in Account A
       - under ```Other AWS accounts```, add id for Account B e.g. ```arn:aws:iam::123456790:root```
-1. Go to S3 and create a bucket
-1. Go to Properties, under Default encryption, select AWS-KMS and select the KMS key created in the previous step
-1. Create a bucket policy using sample [bucket_policy_delegate_permissions_to_access_point](./src/main/resources/bucket_policy_delegate_permissions_to_access_point.json)
-1. Create first access point using sample [access_point_for_external_roles_sample](./src/main/resources/access_point_for_external_roles_sample.json)
-1. Create second access point using samples [access_point_for_external_users_sample](./src/main/resources/access_point_for_external_users_sample.json)
+1. Go to S3 and create a bucket. Copy sample CSV data to this bucket. e.g. [NYC taxi data](https://registry.opendata.aws/nyc-tlc-trip-records-pds/)
+1. Go to Properties, under Default encryption, select AWS-KMS and select the KMS key created in the previous step.
+1. Create a bucket policy using sample [bucket_policy_delegate_permissions_to_access_point_sample](./resources/bucket_policy_delegate_permissions_to_access_point_sample.json)
+1. Create access point using sample   [access_point_for_emr_role_sample](./resources/access_point_policy_for_emr_role_sample.json)
 
-## Testing Instructions - Account B (E.g. 123456790)
 
-1. **Pre-requisite:** [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) is required on your on your Laptop / MacBook
-1. **Test # 1** - using AWS CLI v2 on your Laptop / MacBook
+## Deployment Instructions - Account B (E.g. 123456790)
 
-   ```bash
-   aws s3api put-object --bucket arn:aws:s3:us-east-1:2345678901:accesspoint/access-point-external-users --key <Object_Name> --body <Object_Path> --profile default
-   ```
+1. Go to S3 and create a bucket to store PySpark source code and EMR logs
+1. Go to EMR and click on `Create Cluster`
+1. Under General Configuration, provide Name, S3 folder for logging and select `Cluster` as Launch mode
+1. Under Software Configuration, select `emr-5.XX.X` as Release and `Spark` as Application
+1. Under Hardware Configuration, select `m5.xlarge` as Instance type and `3` as number of instances
+1. Under Security and access, create and select EC2 key pair, and permissions as default. For roles, select `EMR_DefaultRole` as EMR role and `EMR_EC2_DefaultRole` as EC2 instance profile
+1. Click on "Create Cluster"
+1. Once the EMR cluster is up and running, go to IAM and select `EMR_EC2_DefaultRole`
+1. Attach two more policies to this role:
+   - IAM Policy for KMS. Use [kms_policy_emr_sample](./resources/kms_policy_emr_sample.json) as a sample
+   - IAM Policy for S3. Use [s3_policy_emr_sample](./resources/s3_policy_emr_sample.json) as a sample
 
-1. **Test # 2** - using EC2 instance
+## Testing Instructions - Account B
 
-   1. Logon to EC2 Instance using the command below
-
-      ```ssh -i my_ec2_keypair.pem ec2-user@Public_IP_of_EC2```
-
-   1. Install Open JDK v 1.8
-   1. Logout from EC2 Instance
-   1. Upload Jar file to EC2 instance
-
-      ```bash
-      scp -i /Users/<Your_User_Id>/Downloads/my_ec2_keypair.pem s3-cross-account-access-points-0.1.jar ec2-user@<Public_IP_of_EC2>:/home/ec2-user/
-      ```
-
-   1. Logon to EC2 Instance
-
-   1. Run the Java Program
-
-      ```bash
-      java -jar s3-cross-account-access-points-0.1.jar arn:aws:s3:us-east-1:2345678901:accesspoint/access-point-external-roles from_ec2_instance us-east-1
-      ```
+Follow the below instructions to execute a PySpark job in EMR:
+1. Upload the source code `s3_access_points.py` to S3 bucket created in Account B
+1. Go to EMR console and select the cluster created in the previous step
+1. Navigate to `Steps` tab and click `Add step`
+1. Select `Spark Application` as Step type and provide a Name
+1. Select `Cluster` as Deploy mode, S3 path for source code `s3_access_points.py` as Application location
+1. Under Arguments provide the following:
+   - --input_uri s3://arn:aws:s3::Account_A:accesspoint/a-emr-access-point/SAMPLE_CSV_FILE
+   - --output_uri s3://arn:aws:s3::Account_A:accesspoint/a-emr-access-point/output
+1. Select `Continue` as Action on failure and then click `Add`
+1. This kick starts the Spark job. You can monitor the logs under Cluster > Application user interfaces > Spark history server
+1. Once done, the step changes from `Pending` to `Completed` state.
+1. Verify the output folder of S3 bucket in Account_A to make sure the data is saved.
 
 ## License Summary
 

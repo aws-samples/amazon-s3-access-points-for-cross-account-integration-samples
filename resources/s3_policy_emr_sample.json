@@ -1,0 +1,21 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetAccessPoint*",
+                "s3:ListBucket",
+                "s3:GetObject",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3::Account_A:accesspoint/a-emr-access-point",
+                "arn:aws:s3::Account_A:accesspoint/a-emr-access-point/object/*",
+                "arn:aws:s3:::a-access-points-data",
+                "arn:aws:s3:::a-access-points-data/*"
+            ]
+        }
+    ]
+}

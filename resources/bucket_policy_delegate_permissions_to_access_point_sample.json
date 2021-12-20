@@ -4,12 +4,15 @@
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "*"
+                "AWS": [
+                    "arn:aws:iam::Account_B:root",
+                    "arn:aws:iam::Account_B:role/EMR_EC2_DefaultRole"
+                ]
             },
             "Action": "*",
             "Resource": [
-                "arn:aws:s3:::cross-a-poc",
-                "arn:aws:s3:::cross-a-poc/*"
+                "arn:aws:s3:::a-access-points-data",
+                "arn:aws:s3:::a-access-points-data/*"
             ],
             "Condition": {
                 "StringEquals": {
@@ -18,4 +21,4 @@
             }
         }
     ]
-}
+}          
