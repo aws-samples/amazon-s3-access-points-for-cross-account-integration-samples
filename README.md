@@ -1,21 +1,25 @@
-# Amazon S3 Cross-account Access from EMR using Access Points
+# Amazon S3 access points for cross-account integration - EMR use case
 
-This is a sample solution to demonstrate S3 cross-account access from EMR using [Access points](https://docs.aws.amazon.com/AmazonS3/latest/dev/access-points.html). It demonstrates the example as shown in the below figure.
+This is a sample solution to demonstrate S3 cross-account access from EMR using [Access points](https://docs.aws.amazon.com/AmazonS3/latest/dev/access-points.html). 
+
+Figure below represents the architecture of the solution.
 
 ![Alt](./resources/EMR_S3_Cross-account_Access_using_AccessPoints.png)
 
+---
+
 ## AWS Service Requirements
 
-The following AWS services are required to demo/try this solution.
+The following AWS services are required to test this solution.
 
 ### Source Account
 
-1. One S3 Bucket
-1. One Bucket Policy
+1. One Amazon S3 bucket
+1. One bucket policy
 1. One Access Point
 1. One KMS Key to encrypt S3 bucket
 
-```Note:``` KMS Key is optional, if you want to skip this, skip all steps related to KMS Key in the subsequent sections.
+---
 
 ### Target Account
 
@@ -23,15 +27,19 @@ The following AWS services are required to demo/try this solution.
 1. One IAM Role
 1. One EMR Cluster
 
+---
+
 ## Source Code Overview
 
 | Code | Overview|
 |-------------------------------------------------------------- | -------------- |
-| [s3_access_points](./src/s3_access_points.py) | PySpark script to read and write data using S3 Access Points.|
+| [spark_on_emr_s3_access_points.py](./src/spark_on_emr_s3_access_points.py) | PySpark script to read and write data using S3 Access Points.|
+
+---
 
 ## Deployment Instructions - Account A (E.g. 2345678901)
 
-1. Login to AWS Console.
+1. Login to AWS Management Console.
 1. Go to KMS and create a Customer managed key
    - For Key administrators, add required users / roles in Account A
    - For Key users, add
@@ -43,9 +51,11 @@ The following AWS services are required to demo/try this solution.
 1. Create access point using sample   [access_point_for_emr_role_sample](./resources/access_point_policy_for_emr_role_sample.json)
 
 
+---
+
 ## Deployment Instructions - Account B (E.g. 123456790)
 
-1. Go to S3 and create a bucket to store PySpark source code and EMR logs
+1. Go to S3 and create a bucket to store PySpark script and EMR logs
 1. Go to EMR and click on `Create Cluster`
 1. Under General Configuration, provide Name, S3 folder for logging and select `Cluster` as Launch mode
 1. Under Software Configuration, select `emr-5.XX.X` as Release and `Spark` as Application
@@ -57,9 +67,12 @@ The following AWS services are required to demo/try this solution.
    - IAM Policy for KMS. Use [kms_policy_emr_sample](./resources/kms_policy_emr_sample.json) as a sample
    - IAM Policy for S3. Use [s3_policy_emr_sample](./resources/s3_policy_emr_sample.json) as a sample
 
+---
+
 ## Testing Instructions - Account B
 
-Follow the below instructions to execute a PySpark job in EMR:
+Follow below instructions to execute a PySpark job in EMR:
+
 1. Upload the source code `s3_access_points.py` to S3 bucket created in Account B
 1. Go to EMR console and select the cluster created in the previous step
 1. Navigate to `Steps` tab and click `Add step`
@@ -72,6 +85,14 @@ Follow the below instructions to execute a PySpark job in EMR:
 1. This kick starts the Spark job. You can monitor the logs under Cluster > Application user interfaces > Spark history server
 1. Once done, the step changes from `Pending` to `Completed` state.
 1. Verify the output folder of S3 bucket in Account_A to make sure the data is saved.
+
+---
+
+## Cleaning up
+
+TBA
+
+---
 
 ## License Summary
 
