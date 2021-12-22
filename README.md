@@ -1,17 +1,30 @@
-# Amazon S3 Cross-account Access using Access Points
+# Amazon S3 access points for cross-account integration samples
 
-This is a sample solution to demonstrate S3 cross-account access using [Access points](https://docs.aws.amazon.com/AmazonS3/latest/dev/access-points.html). It demonstrate two examples as  shown in the below figure.
+In this repository, we provide cross-account integration code samples using [Access points](https://docs.aws.amazon.com/AmazonS3/latest/dev/access-points.html), a feature provided by Amazon S3. 
+
+This repo is organized into following branches:
+
+1. [main](https://github.com/aws-samples/amazon-s3-access-points-for-cross-account-integration-samples/tree/main): It has code samples for AWS CLI and Java application 
+2. [main-emr](https://github.com/aws-samples/amazon-s3-access-points-for-cross-account-integration-samples/tree/main-emr): It has code sample for an Amazon EMR job.
+
+Figure below represent AWS CLI and Java application 
 
 ![Alt](./src/main/resources/S3_Cross-account_Access_using_AccessPoints.png)
+
+---
 
 ## Build Instructions
 
 1. The source code has Maven nature, so if you have Maven locally then you can build it using standard Maven commands e.g. ```mvn -X clean install```. or use the options available in your IDE
 2. This will generate a jar file called ```s3-cross-account-access-points-0.1.jar```
 
+---
+
 ## AWS Service Requirements
 
 The following AWS services are required to demo/try this solution.
+
+---
 
 ### Source Account
 
@@ -20,7 +33,7 @@ The following AWS services are required to demo/try this solution.
 1. Two Access Points
 1. One KMS Key to encrypt S3 bucket
 
-```Note:``` KMS Key is optional, if you want to skip this, skip all steps related to KMS Key in the subsequent sections.
+---
 
 ### Target Account
 
@@ -28,6 +41,8 @@ The following AWS services are required to demo/try this solution.
 1. One IAM User
 1. One IAM Role
 1. One EC2 Instance
+
+---
 
 ## Utility Classes Overview
 
@@ -96,6 +111,18 @@ The following AWS services are required to demo/try this solution.
       ```bash
       java -jar s3-cross-account-access-points-0.1.jar arn:aws:s3:us-east-1:2345678901:accesspoint/access-point-external-roles from_ec2_instance us-east-1
       ```
+
+---
+
+## Authors
+
+Following people have contributed to this repo.
+
+1. Phanee Gottumukkala, Data & ML Engineer, AWS Professional Services
+1. Sunil Penumala, Data Architect, AWS Professional Services
+1. Ravi Itha, Sr. Data Architect, AWS Professional Services
+
+---
 
 ## License Summary
 
