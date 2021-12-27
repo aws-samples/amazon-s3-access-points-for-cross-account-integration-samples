@@ -39,21 +39,21 @@ The following AWS services are required to test this solution.
 
 ## Deployment Instructions - Account A (E.g. 2345678901)
 
-1. Login to AWS Management Console.
+1. Login to AWS Management Console
 1. Go to KMS and create a Customer managed key
    - For Key administrators, add required users / roles in Account A
    - For Key users, add
       - required users / roles in Account A
-      - under ```Other AWS accounts```, add id for Account B e.g. ```arn:aws:iam::123456790:root```
+      - under ```Other AWS accounts```, add id for Account B e.g. ```arn:aws:iam::1234567890:root```
 1. Go to S3 and create a bucket. Copy sample CSV data to this bucket. e.g. [NYC taxi data](https://registry.opendata.aws/nyc-tlc-trip-records-pds/)
-1. Go to Properties, under Default encryption, select AWS-KMS and select the KMS key created in the previous step.
+1. Go to Properties, under Default encryption, select AWS-KMS and select the KMS key created in the previous step
 1. Create a bucket policy using sample [bucket_policy_delegate_permissions_to_access_point_sample](./resources/bucket_policy_delegate_permissions_to_access_point_sample.json)
 1. Create access point using sample   [access_point_for_emr_role_sample](./resources/access_point_policy_for_emr_role_sample.json)
 
 
 ---
 
-## Deployment Instructions - Account B (E.g. 123456790)
+## Deployment Instructions - Account B (E.g. 1234567890)
 
 1. Go to S3 and create a bucket to store PySpark script and EMR logs
 1. Go to EMR and click on `Create Cluster`
@@ -83,14 +83,20 @@ Follow below instructions to execute a PySpark job in EMR:
    - --output_uri s3://arn:aws:s3::Account_A:accesspoint/a-emr-access-point/output
 1. Select `Continue` as Action on failure and then click `Add`
 1. This kick starts the Spark job. You can monitor the logs under Cluster > Application user interfaces > Spark history server
-1. Once done, the step changes from `Pending` to `Completed` state.
-1. Verify the output folder of S3 bucket in Account_A to make sure the data is saved.
+1. Once done, the step changes from `Pending` to `Completed` state
+1. Verify the output folder of S3 bucket in Account_A to make sure the data is saved
 
 ---
 
 ## Cleaning up
 
-TBA
+After the testing is complete, you may terminate the cluster using the following steps,
+1. Navigate to EMR console and select the cluster to terminate
+1. Choose Terminate. When prompted, choose Change to turn termination protection off
+1. In the Terminate clusters dialog, for Termination Protection, choose Off and then click the check mark to confirm
+1. Click Terminate
+
+Also delete other resources created as part of this sample when not in use.
 
 ---
 
