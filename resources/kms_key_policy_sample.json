@@ -8,8 +8,23 @@
             "Principal": {
                 "AWS": "arn:aws:iam::Account_A:root"
             },
-            "Action": "kms:*",
-            "Resource": "*"
+            "Action": [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:TagResource",
+                "kms:UntagResource",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion"
+            ],
+            "Resource": "arn:aws:kms::ACCOUNT_A:key/KMS_KEY_ID"
         },
         {
             "Sid": "Allow access for Key Administrators",
@@ -35,7 +50,7 @@
                 "kms:ScheduleKeyDeletion",
                 "kms:CancelKeyDeletion"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:kms::ACCOUNT_A:key/KMS_KEY_ID"
         },
         {
             "Sid": "Allow use of the key",
@@ -52,7 +67,7 @@
                 "kms:GenerateDataKey*",
                 "kms:DescribeKey"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:kms::ACCOUNT_A:key/KMS_KEY_ID"
         },
         {
             "Sid": "Allow attachment of persistent resources",
@@ -67,7 +82,7 @@
                 "kms:ListGrants",
                 "kms:RevokeGrant"
             ],
-            "Resource": "*",
+            "Resource": "arn:aws:kms::ACCOUNT_A:key/KMS_KEY_ID",
             "Condition": {
                 "Bool": {
                     "kms:GrantIsForAWSResource": "true"
