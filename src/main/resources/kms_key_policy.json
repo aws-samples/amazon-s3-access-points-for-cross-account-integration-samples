@@ -31,9 +31,8 @@
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-                    "arn:aws:iam::ACCOUNT_A:user/iravi-iam",
-                    "arn:aws:iam::ACCOUNT_A:role/admin",
-                    "arn:aws:iam::ACCOUNT_A:user/thiru"
+                    "arn:aws:iam::ACCOUNT_A:user/USER_NAME",
+                    "arn:aws:iam::ACCOUNT_A:role/admin"
                 ]
             },
             "Action": [
@@ -59,7 +58,7 @@
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-                    "arn:aws:iam::ACCOUNT_A:user/thiru",
+                    "arn:aws:iam::ACCOUNT_A:user/USER_NAME",
                     "arn:aws:iam::ACCOUNT_B:root"
                 ]
             },
@@ -77,7 +76,7 @@
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-                    "arn:aws:iam::ACCOUNT_A:user/thiru",
+                    "arn:aws:iam::ACCOUNT_A:user/USER_NAME",
                     "arn:aws:iam::ACCOUNT_B:root"
                 ]
             },
