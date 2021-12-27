@@ -5,18 +5,18 @@
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-                    "arn:aws:iam::Account_B:root",
-                    "arn:aws:iam::Account_B:role/EMR_EC2_DefaultRole"
+                    "arn:aws:iam::ACCOUNT_B:root",
+                    "arn:aws:iam::ACCOUNT_B:role/EMR_EC2_DefaultRole"
                 ]
             },
             "Action": "*",
             "Resource": [
-                "arn:aws:s3:::a-access-points-data",
-                "arn:aws:s3:::a-access-points-data/*"
+                "arn:aws:s3:::BUCKET_NAME",
+                "arn:aws:s3:::BUCKET_NAME/*"
             ],
             "Condition": {
                 "StringEquals": {
-                    "s3:DataAccessPointAccount": "Account_A"
+                    "s3:DataAccessPointAccount": "ACCOUNT_A"
                 }
             }
         }

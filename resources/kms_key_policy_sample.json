@@ -6,7 +6,7 @@
             "Sid": "Enable IAM User Permissions",
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::Account_A:root"
+                "AWS": "arn:aws:iam::ACCOUNT_A:root"
             },
             "Action": [
                 "kms:Create*",
@@ -31,7 +31,7 @@
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-                    "arn:aws:iam::Account_A:role/admin"
+                    "arn:aws:iam::ACCOUNT_A:role/admin"
                 ]
             },
             "Action": [
@@ -57,7 +57,7 @@
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-                    "arn:aws:iam::Account_B:root"
+                    "arn:aws:iam::ACCOUNT_B:root"
                 ]
             },
             "Action": [
@@ -74,7 +74,7 @@
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-                    "arn:aws:iam::Account_B:root"
+                    "arn:aws:iam::ACCOUNT_B:root"
                 ]
             },
             "Action": [
