@@ -42,7 +42,7 @@
                 "kms:DisconnectCustomKeyStore",
                 "kms:DeleteAlias"
             ],
-            "Resource": "*"
+            "Resource": "arn:aws:kms::ACCOUNT_A:key/KMS_KEY_ID"
         }
     ]
 }

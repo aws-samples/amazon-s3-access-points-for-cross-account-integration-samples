@@ -8,8 +8,8 @@
             },
             "Action": "*",
             "Resource": [
-                "arn:aws:s3:::cross-a-poc",
-                "arn:aws:s3:::cross-a-poc/*"
+                "arn:aws:s3:::BUCKET_NAME",
+                "arn:aws:s3:::BUCKET_NAME/*"
             ],
             "Condition": {
                 "StringEquals": {

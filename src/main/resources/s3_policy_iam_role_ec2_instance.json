@@ -8,7 +8,12 @@
                 "s3:PutObject",
                 "s3:ListBucket"
             ],
-            "Resource": "*"
+            "Resource": [
+                "arn:aws:s3::ACCOUNT_A:accesspoint/ACCESS_POINT_NAME",
+                "arn:aws:s3::ACCOUNT_A:accesspoint/ACCESS_POINT_NAME/*",
+                "arn:aws:s3:::BUCKET_NAME",
+                "arn:aws:s3:::BUCKET_NAME/*"
+            ]
         }
     ]
 }

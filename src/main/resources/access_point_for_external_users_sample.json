@@ -4,13 +4,13 @@
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::1234567890:user/user_access_point_demo"
+                "AWS": "arn:aws:iam::ACCOUNT_B:user/user_access_point_demo"
             },
             "Action": [
                 "s3:GetObject",
                 "s3:PutObject"
             ],
-            "Resource": "arn:aws:s3:us-east-1:2345678901:accesspoint/access-point-external-users/object/*"
+            "Resource": "arn:aws:s3::ACCOUNT_A:accesspoint/ACCESS_POINT_NAME/object/*"
         }
     ]
 }
