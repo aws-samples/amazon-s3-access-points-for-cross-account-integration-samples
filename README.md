@@ -74,14 +74,14 @@ The following AWS services are required to demo/try this solution.
    - For Key administrators, add required users / roles in Account A
    - For Key users, add
       - required users / roles in Account A
-      - under ```Other AWS accounts```, add id for Account B e.g. ```arn:aws:iam::123456790:root```
+      - under ```Other AWS accounts```, add id for Account B e.g. ```arn:aws:iam::1234567890:root```
 1. Go to S3 and create a bucket
 1. Go to Properties, under Default encryption, select AWS-KMS and select the KMS key created in the previous step
 1. Create a bucket policy using sample [bucket_policy_delegate_permissions_to_access_point](./src/main/resources/bucket_policy_delegate_permissions_to_access_point.json)
 1. Create first access point using sample [access_point_for_external_roles_sample](./src/main/resources/access_point_for_external_roles_sample.json)
 1. Create second access point using samples [access_point_for_external_users_sample](./src/main/resources/access_point_for_external_users_sample.json)
 
-## Testing Instructions - Account B (E.g. 123456790)
+## Testing Instructions - Account B (E.g. 1234567890)
 
 1. **Pre-requisite:** [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) is required on your on your Laptop / MacBook
 1. **Test # 1** - using AWS CLI v2 on your Laptop / MacBook
