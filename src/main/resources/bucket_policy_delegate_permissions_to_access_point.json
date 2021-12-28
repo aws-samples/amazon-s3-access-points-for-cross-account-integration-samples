@@ -4,7 +4,10 @@
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "*"
+                "AWS": [
+                    "arn:aws:iam::ACCOUNT_B:root",
+                    "arn:aws:iam::ACCOUNT_B:role/EMR_EC2_DefaultRole"
+                ]
             },
             "Action": "*",
             "Resource": [
@@ -13,7 +16,7 @@
             ],
             "Condition": {
                 "StringEquals": {
-                    "s3:DataAccessPointAccount": "Account_A"
+                    "s3:DataAccessPointAccount": "ACCOUNT_A"
                 }
             }
         }
